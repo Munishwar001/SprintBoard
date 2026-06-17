@@ -1,0 +1,298 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Create Workspace - SprintBoard";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    
+    <!-- Bootstrap 5 & Font Awesome -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Design System & Custom CSS Inheritance -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/landing.css" asp-append-version="true" />
+    
+    <style>
+        .auth-container {
+            min-height: 100vh;
+        }
+        .auth-sidebar {
+            background: radial-gradient(circle at 80% 20%, rgba(96, 165, 250, 0.15) 0%, transparent 50%),
+                        linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .auth-card {
+            background: var(--sb-card-bg);
+            border: 1px solid var(--sb-card-border);
+            border-radius: 16px;
+            box-shadow: var(--sb-shadow-lg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            max-width: 440px;
+            width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--sb-text-muted);
+            z-index: 10;
+        }
+        .password-container {
+            position: relative;
+        }
+        .auth-form-input:focus {
+            border-color: var(--sb-primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-body-surface">
+    <!-- Theme Switcher -->
+    <div class="position-absolute top-0 end-0 p-3" style="z-index: 999;">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0 auth-container">
+            <!-- Left Side: Expanded Mockup & Highlights -->
+            <div class="col-lg-6 p-5 auth-sidebar d-flex flex-column justify-content-between">
+                <!-- Branding Header -->
+                <div class="d-flex align-items-center mb-5 mb-lg-0">
+                    <a href="/" class="d-flex align-items-center fw-extrabold fs-4 text-white text-decoration-none" style="font-family: var(--font-heading); letter-spacing: -0.03em;">
+                        <i class="fa-solid fa-square-kanban me-2 text-primary"></i>SprintBoard
+                    </a>
+                </div>
+                
+                <!-- Center Graphic Simulation -->
+                <div class="my-auto mx-auto w-100" style="max-width: 540px;">
+                    <div class="text-center text-lg-start mb-4">
+                        <h2 class="display-6 fw-bold mb-3 text-white" style="font-family: var(--font-heading); letter-spacing: -0.02em;">Create Your SprintBoard Workspace</h2>
+                        <p class="text-white-50 fs-6">
+                            Start planning projects, assigning tasks, and collaborating with your team in minutes.
+                        </p>
+                    </div>
+
+                    <!-- Expanded Mockup Dashboard Container -->
+                    <div class="dashboard-mockup shadow-lg p-3 bg-body-tertiary rounded-3 mb-4">
+                        <div class="mockup-header border-bottom pb-2 mb-3 d-flex justify-content-between align-items-center" style="background: transparent;">
+                            <div class="d-flex">
+                                <span class="dot-btn dot-red"></span>
+                                <span class="dot-btn dot-yellow"></span>
+                                <span class="dot-btn dot-green"></span>
+                            </div>
+                            <span class="badge bg-primary-subtle text-primary text-xxs" style="font-size: 8px;"><i class="fa-solid fa-tower-broadcast me-1"></i>SignalR Active</span>
+                            <div style="width: 40px;"></div>
+                        </div>
+                        
+                        <div class="row g-3 text-dark">
+                            <!-- Column 1: Active Projects List -->
+                            <div class="col-sm-6">
+                                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                                    <h6 class="text-xxs text-uppercase tracking-wider text-muted mb-2 fw-bold">Active Projects</h6>
+                                    <div class="d-flex flex-column gap-2" style="font-size: 9px;">
+                                        <div class="p-1 border rounded bg-light-subtle d-flex justify-content-between">
+                                            <span>Q3 Roadmap</span>
+                                            <span class="badge bg-primary-subtle text-primary">Active</span>
+                                        </div>
+                                        <div class="p-1 border rounded bg-light-subtle d-flex justify-content-between">
+                                            <span>API Client Integration</span>
+                                            <span class="badge bg-warning-subtle text-warning">Progress</span>
+                                        </div>
+                                        <div class="p-1 border rounded bg-light-subtle d-flex justify-content-between">
+                                            <span>Marketing Assets</span>
+                                            <span class="badge bg-success-subtle text-success">Done</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Column 2: Productivity Metrics -->
+                            <div class="col-sm-6">
+                                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                                    <h6 class="text-xxs text-uppercase tracking-wider text-muted mb-2 fw-bold">Productivity Metrics</h6>
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <div class="project-progress-circle" style="width: 38px; height: 38px; font-size: 9px;"></div>
+                                        <div>
+                                            <div class="fw-bold text-xs" style="font-size: 10px;">86% Tasks Complete</div>
+                                            <small class="text-muted" style="font-size: 8px;">+12% this week</small>
+                                        </div>
+                                    </div>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-primary" style="width: 86%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Full-Width: Team & Notification Signals -->
+                            <div class="col-12">
+                                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="text-xxs text-uppercase tracking-wider text-muted mb-0 fw-bold">Live Alerts Panel</h6>
+                                        <span class="badge bg-danger text-xxs">Live</span>
+                                    </div>
+                                    <div class="d-flex flex-column gap-2" style="font-size: 9px;">
+                                        <div class="p-1 bg-info-subtle border-0 rounded d-flex justify-content-between align-items-center">
+                                            <span><i class="fa-solid fa-bell me-1 text-primary"></i> Team workspace initialized</span>
+                                            <span class="text-muted">Just now</span>
+                                        </div>
+                                        <div class="p-1 bg-info-subtle border-0 rounded d-flex justify-content-between align-items-center">
+                                            <span><i class="fa-solid fa-bell me-1 text-primary"></i> Hangfire background worker active</span>
+                                            <span class="text-muted">3m ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Left Side Footer -->
+                <div class="text-white-50 text-xs mt-3">
+                    &copy; 2026 SprintBoard Inc. Built with ASP.NET MVC and Bootstrap 5.
+                </div>
+            </div>
+            
+            <!-- Right Side: Registration Form -->
+            <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center p-4 p-md-5">
+                <div class="auth-card p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold mb-1" style="font-family: var(--font-heading); letter-spacing: -0.02em;">Create Workspace</h3>
+                        <p class="text-muted text-sm">Register your administrator account</p>
+                    </div>
+
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger p-2 text-sm" role="alert"></div>
+
+                        <!-- Full Name Input -->
+                        <div class="mb-3">
+                            <label asp-for="Input.FullName" class="form-label text-sm fw-bold">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-body-tertiary border-end-0 text-muted"><i class="fa-solid fa-user"></i></span>
+                                <input asp-for="Input.FullName" class="form-control auth-form-input border-start-0 py-2" placeholder="John Doe" required />
+                            </div>
+                            <span asp-validation-for="Input.FullName" class="text-danger text-xs mt-1 d-block"></span>
+                        </div>
+
+                        <!-- Email Input -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label text-sm fw-bold">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-body-tertiary border-end-0 text-muted"><i class="fa-solid fa-envelope"></i></span>
+                                <input asp-for="Input.Email" class="form-control auth-form-input border-start-0 py-2" autocomplete="username" aria-required="true" placeholder="name@company.com" required />
+                            </div>
+                            <span asp-validation-for="Input.Email" class="text-danger text-xs mt-1 d-block"></span>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" class="form-label text-sm fw-bold">Password</label>
+                            <div class="password-container">
+                                <input id="reg-password" asp-for="Input.Password" class="form-control auth-form-input py-2" autocomplete="new-password" aria-required="true" placeholder="Min. 6 characters" required />
+                                <span id="toggle-reg-password" class="password-toggle"><i class="fa-solid fa-eye"></i></span>
+                            </div>
+                            <span asp-validation-for="Input.Password" class="text-danger text-xs mt-1 d-block"></span>
+                        </div>
+
+                        <!-- Confirm Password Input -->
+                        <div class="mb-4">
+                            <label asp-for="Input.ConfirmPassword" class="form-label text-sm fw-bold">Confirm Password</label>
+                            <div class="password-container">
+                                <input id="confirm-password" asp-for="Input.ConfirmPassword" class="form-control auth-form-input py-2" autocomplete="new-password" aria-required="true" placeholder="••••••••" required />
+                                <span id="toggle-confirm-password" class="password-toggle"><i class="fa-solid fa-eye"></i></span>
+                            </div>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger text-xs mt-1 d-block"></span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="mb-3">
+                            <button id="registerSubmit" type="submit" class="btn btn-premium-primary w-100 py-2 d-flex align-items-center justify-content-center gap-2">
+                                <span id="btn-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <span id="btn-text">Create Workspace</span>
+                            </button>
+                        </div>
+
+                        <!-- Already have account link -->
+                        <div class="text-center mt-4" style="font-size: 0.9rem;">
+                            <span class="text-muted">Already have an account?</span>
+                            <a asp-page="./Login" class="text-decoration-none text-primary fw-bold ms-1">Sign In</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Footer Navigation links -->
+                <div class="d-flex gap-3 mt-4 text-xs text-muted">
+                    <a href="#" class="text-reset text-decoration-none hover-primary">Privacy Policy</a>
+                    <span>•</span>
+                    <a href="#" class="text-reset text-decoration-none hover-primary">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/landing.js" asp-append-version="true"></script>
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // 1. Password Visibility Toggle
+        function setupToggle(fieldId, toggleId) {
+            const field = document.getElementById(fieldId);
+            const toggle = document.getElementById(toggleId);
+            if (toggle && field) {
+                toggle.addEventListener('click', function () {
+                    const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
+                    field.setAttribute('type', type);
+                    
+                    const icon = toggle.querySelector('i');
+                    if (type === 'text') {
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            }
+        }
+        setupToggle('reg-password', 'toggle-reg-password');
+        setupToggle('confirm-password', 'toggle-confirm-password');
+
+        // 2. Loading State on Form Submit
+        const regForm = document.getElementById('registerForm');
+        const submitBtn = document.getElementById('registerSubmit');
+        const spinner = document.getElementById('btn-spinner');
+        const btnText = document.getElementById('btn-text');
+
+        if (regForm) {
+            regForm.addEventListener('submit', function () {
+                if (regForm.checkValidity()) {
+                    submitBtn.classList.add('disabled');
+                    spinner.classList.remove('d-none');
+                    btnText.textContent = "Creating Workspace...";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Sign In - SprintBoard";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    
+    <!-- Bootstrap 5 & Font Awesome -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Design System & Custom CSS Inheritance -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/landing.css" asp-append-version="true" />
+    
+    <style>
+        .auth-container {
+            min-height: 100vh;
+        }
+        .auth-sidebar {
+            background: radial-gradient(circle at 80% 20%, rgba(96, 165, 250, 0.15) 0%, transparent 50%),
+                        linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .auth-card {
+            background: var(--sb-card-bg);
+            border: 1px solid var(--sb-card-border);
+            border-radius: 16px;
+            box-shadow: var(--sb-shadow-lg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            max-width: 440px;
+            width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--sb-text-muted);
+            z-index: 10;
+        }
+        .password-container {
+            position: relative;
+        }
+        .auth-form-input:focus {
+            border-color: var(--sb-primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-body-surface">
+    <!-- Theme Switcher -->
+    <div class="position-absolute top-0 end-0 p-3" style="z-index: 999;">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0 auth-container">
+            <!-- Left Side: Dashboard Preview & Brand Identity -->
+            <div class="col-lg-6 p-5 auth-sidebar d-flex flex-column justify-content-between">
+                <!-- Branding Header -->
+                <div class="d-flex align-items-center mb-5 mb-lg-0">
+                    <a href="/" class="d-flex align-items-center fw-extrabold fs-4 text-white text-decoration-none" style="font-family: var(--font-heading); letter-spacing: -0.03em;">
+                        <i class="fa-solid fa-square-kanban me-2 text-primary"></i>SprintBoard
+                    </a>
+                </div>
+                
+                <!-- Center Dashboard Simulation -->
+                <div class="my-auto mx-auto w-100" style="max-width: 500px;">
+                    <div class="text-center text-lg-start mb-4">
+                        <h2 class="display-6 fw-bold mb-3 text-white" style="font-family: var(--font-heading); letter-spacing: -0.02em;">Welcome Back to SprintBoard</h2>
+                        <p class="text-white-50 fs-6">
+                            Continue managing projects, collaborating with your team, and delivering results faster.
+                        </p>
+                    </div>
+
+                    <!-- Mockup Dashboard Container -->
+                    <div class="dashboard-mockup shadow-lg p-3 bg-body-tertiary rounded-3 mb-4">
+                        <div class="mockup-header border-bottom pb-2 mb-3 d-flex justify-content-between align-items-center" style="background: transparent;">
+                            <div class="d-flex">
+                                <span class="dot-btn dot-red"></span>
+                                <span class="dot-btn dot-yellow"></span>
+                                <span class="dot-btn dot-green"></span>
+                            </div>
+                            <span class="text-xxs text-muted fw-bold"><i class="fa-solid fa-lock me-1"></i>sprintboard.app/workspace</span>
+                            <div style="width: 40px;"></div>
+                        </div>
+                        
+                        <div class="row g-3 text-dark">
+                            <!-- 1. Progress -->
+                            <div class="col-sm-6">
+                                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                                    <h6 class="text-xxs text-uppercase tracking-wider text-muted mb-2 fw-bold">Project Progress</h6>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="project-progress-circle" style="width: 42px; height: 42px;"></div>
+                                        <div>
+                                            <div class="fw-bold text-xs">Sprint 24</div>
+                                            <span class="badge bg-success-subtle text-success" style="font-size: 8px;">On Track</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 2. Team Members -->
+                            <div class="col-sm-6">
+                                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100">
+                                    <h6 class="text-xxs text-uppercase tracking-wider text-muted mb-2 fw-bold">Team Members</h6>
+                                    <div class="d-flex align-items-center">
+                                        <div class="d-flex -space-x-2">
+                                            <span class="avatar-placeholder bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width:24px; height:24px; font-size:8px; border:2px solid #fff;">JD</span>
+                                            <span class="avatar-placeholder bg-success text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width:24px; height:24px; font-size:8px; border:2px solid #fff; margin-left:-6px;">EM</span>
+                                            <span class="avatar-placeholder bg-warning text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width:24px; height:24px; font-size:8px; border:2px solid #fff; margin-left:-6px;">SK</span>
+                                        </div>
+                                        <div class="ms-2">
+                                            <div class="fw-bold text-xs" style="font-size: 10px;">7 developers</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. Task Status -->
+                            <div class="col-12">
+                                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
+                                    <h6 class="text-xxs text-uppercase tracking-wider text-muted mb-2 fw-bold">Task Statuses</h6>
+                                    <div class="row g-2 text-center" style="font-size: 10px;">
+                                        <div class="col-4">
+                                            <div class="p-1 bg-light-subtle rounded border">
+                                                <div class="fw-bold text-primary">5</div>
+                                                <div class="text-muted">To Do</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="p-1 bg-warning-subtle rounded border">
+                                                <div class="fw-bold text-warning">4</div>
+                                                <div class="text-muted">Active</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="p-1 bg-success-subtle rounded border">
+                                                <div class="fw-bold text-success">18</div>
+                                                <div class="text-muted">Done</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 4. Recent Activity -->
+                            <div class="col-12">
+                                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
+                                    <h6 class="text-xxs text-uppercase tracking-wider text-muted mb-2 fw-bold">Recent Activity</h6>
+                                    <div class="d-flex align-items-center mb-1 pb-1 border-bottom" style="font-size: 10px;">
+                                        <i class="fa-solid fa-bolt text-primary me-2"></i>
+                                        <div><strong>Jane Doe</strong> completed <span class="text-primary">Index Database</span></div>
+                                    </div>
+                                    <div class="d-flex align-items-center" style="font-size: 10px;">
+                                        <i class="fa-solid fa-bolt text-primary me-2"></i>
+                                        <div><strong>Marcus Wright</strong> configured <span class="text-primary">Hangfire Jobs</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Left Side Footer -->
+                <div class="text-white-50 text-xs mt-3">
+                    &copy; 2026 SprintBoard Inc. Built with ASP.NET MVC and Bootstrap 5.
+                </div>
+            </div>
+            
+            <!-- Right Side: Clean Form Container -->
+            <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center p-4 p-md-5">
+                <div class="auth-card p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold mb-1" style="font-family: var(--font-heading); letter-spacing: -0.02em;">Sign In</h3>
+                        <p class="text-muted text-sm">Access your project workspaces</p>
+                    </div>
+
+                    <form id="account" method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger p-2 text-sm" role="alert"></div>
+
+                        <!-- Email Input -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label text-sm fw-bold">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-body-tertiary border-end-0 text-muted"><i class="fa-solid fa-envelope"></i></span>
+                                <input asp-for="Input.Email" class="form-control auth-form-input border-start-0 py-2" autocomplete="username" aria-required="true" placeholder="name@company.com" required />
+                            </div>
+                            <span asp-validation-for="Input.Email" class="text-danger text-xs mt-1 d-block"></span>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label asp-for="Input.Password" class="form-label text-sm fw-bold mb-0">Password</label>
+                                <a id="forgot-password" asp-page="./ForgotPassword" class="text-decoration-none text-xs text-primary fw-semibold">Forgot Password?</a>
+                            </div>
+                            <div class="password-container">
+                                <input id="password-field" asp-for="Input.Password" class="form-control auth-form-input py-2" autocomplete="current-password" aria-required="true" placeholder="••••••••" required />
+                                <span id="toggle-password-btn" class="password-toggle"><i class="fa-solid fa-eye"></i></span>
+                            </div>
+                            <span asp-validation-for="Input.Password" class="text-danger text-xs mt-1 d-block"></span>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            <label asp-for="Input.RememberMe" class="form-check-label text-xs text-secondary-emphasis">
+                                Remember this device for 30 days
+                            </label>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="mb-3">
+                            <button id="login-submit" type="submit" class="btn btn-premium-primary w-100 py-2 d-flex align-items-center justify-content-center gap-2">
+                                <span id="btn-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <span id="btn-text">Sign In</span>
+                            </button>
+                        </div>
+
+                        <!-- Create Account Link -->
+                        <div class="text-center mt-4" style="font-size: 0.9rem;">
+                            <span class="text-muted">New to SprintBoard?</span>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none text-primary fw-bold ms-1">Create Workspace</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Footer Navigation links -->
+                <div class="d-flex gap-3 mt-4 text-xs text-muted">
+                    <a href="#" class="text-reset text-decoration-none hover-primary">Privacy Policy</a>
+                    <span>•</span>
+                    <a href="#" class="text-reset text-decoration-none hover-primary">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/landing.js" asp-append-version="true"></script>
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // 1. Password Visibility Toggle
+        const passwordField = document.getElementById('password-field');
+        const toggleBtn = document.getElementById('toggle-password-btn');
+        if (toggleBtn && passwordField) {
+            toggleBtn.addEventListener('click', function () {
+                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+                
+                const icon = toggleBtn.querySelector('i');
+                if (type === 'text') {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        }
+
+        // 2. Loading State on Form Submit
+        const loginForm = document.getElementById('account');
+        const submitBtn = document.getElementById('login-submit');
+        const spinner = document.getElementById('btn-spinner');
+        const btnText = document.getElementById('btn-text');
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', function () {
+                if (loginForm.checkValidity()) {
+                    submitBtn.classList.add('disabled');
+                    spinner.classList.remove('d-none');
+                    btnText.textContent = "Signing In...";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

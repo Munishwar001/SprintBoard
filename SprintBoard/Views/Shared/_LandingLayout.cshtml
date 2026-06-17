@@ -1,0 +1,134 @@
+@* Views/Shared/_LandingLayout.cshtml *@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SprintBoard</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Base App CSS and Custom Premium Landing Page CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/landing.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg sb-navbar fixed-top py-3">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center fw-extrabold fs-4 text-primary" asp-controller="Home" asp-action="Index" style="font-family: var(--font-heading); font-weight: 800; letter-spacing: -0.03em;">
+                    <i class="fa-solid fa-square-kanban me-2 text-primary"></i>SprintBoard
+                </a>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1 gap-lg-3">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#features">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#how-it-works">How It Works</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#dashboard-preview">Product Tour</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#why-sprintboard">Why SprintBoard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#architecture">Architecture</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center gap-2">
+                        <!-- Theme Toggle Button -->
+                        <button id="theme-toggle" class="theme-toggle-btn me-2" aria-label="Toggle Theme">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        
+                        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-premium-secondary py-2 px-3 fs-6">Login</a>
+                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-premium-primary py-2 px-3 fs-6">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <!-- Premium Enterprise Footer -->
+    <footer class="border-top py-5 mt-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row g-4 justify-content-between">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <div class="d-flex align-items-center fw-extrabold fs-4 text-primary mb-3" style="font-family: var(--font-heading); font-weight: 800;">
+                        <i class="fa-solid fa-square-kanban me-2"></i>SprintBoard
+                    </div>
+                    <p class="text-secondary-emphasis mb-4" style="max-width: 320px; font-size: 0.9rem;">
+                        Manage projects faster. Deliver results smarter. The enterprise project & task management platform built for modern teams.
+                    </p>
+                    <div class="d-flex gap-3 text-secondary-emphasis">
+                        <a href="#" class="text-reset fs-5 hover-primary"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="text-reset fs-5 hover-primary"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="text-reset fs-5 hover-primary"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#" class="text-reset fs-5 hover-primary"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h6 class="fw-bold mb-3 text-uppercase tracking-wider text-xs">Product</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2" style="font-size: 0.9rem;">
+                        <li><a href="#features" class="text-decoration-none text-secondary-emphasis hover-primary">Features</a></li>
+                        <li><a href="#architecture" class="text-decoration-none text-secondary-emphasis hover-primary">Architecture</a></li>
+                        <li><a href="#dashboard-preview" class="text-decoration-none text-secondary-emphasis hover-primary">Product Tour</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary-emphasis hover-primary">Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h6 class="fw-bold mb-3 text-uppercase tracking-wider text-xs">Company</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2" style="font-size: 0.9rem;">
+                        <li><a href="#" class="text-decoration-none text-secondary-emphasis hover-primary">About Us</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary-emphasis hover-primary">Careers</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary-emphasis hover-primary">Customers</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary-emphasis hover-primary">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h6 class="fw-bold mb-3 text-uppercase tracking-wider text-xs">Legal & Security</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2" style="font-size: 0.9rem;">
+                        <li><a href="#" class="text-decoration-none text-secondary-emphasis hover-primary">Privacy Policy</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary-emphasis hover-primary">Terms of Service</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary-emphasis hover-primary">Trust & Safety</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary-emphasis hover-primary">GDPR Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-4 opacity-50" />
+            
+            <div class="row align-items-center justify-content-between g-3" style="font-size: 0.85rem;">
+                <div class="col-md-6 text-center text-md-start text-secondary-emphasis">
+                    &copy; 2026 SprintBoard Inc. All rights reserved. Built with ASP.NET MVC and Bootstrap 5.
+                </div>
+                <div class="col-md-6 text-center text-md-end text-secondary-emphasis">
+                    Designed for modern enterprise workflows.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/landing.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
