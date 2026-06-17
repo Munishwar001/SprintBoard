@@ -123,8 +123,15 @@ public class LoginModel : PageModel
                 _logger.LogInformation("User logged in.");
 
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user is not null && await _userManager.IsInRoleAsync(user, "SuperAdmin"))
-                    return RedirectToAction("Index", "Dashboard");
+                if (user is not null)
+                {
+                    if (await _userManager.IsInRoleAsync(user, "SuperAdmin"))
+                        return RedirectToAction("SuperAdmin", "Dashboard");
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                        return RedirectToAction("Admin", "Dashboard");
+                    if (await _userManager.IsInRoleAsync(user, "User"))
+                        return RedirectToAction("UserDashboard", "Dashboard");
+                }
 
                 return LocalRedirect(returnUrl);
             }

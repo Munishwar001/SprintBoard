@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace SprintBoard.Data
+namespace SprintBoard.Data;
+
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    : IdentityDbContext<ApplicationUser>(options)
 {
-     public class ApplicationDbContext
-        : IdentityDbContext<ApplicationUser>
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        public ApplicationDbContext(
-            DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+        base.OnModelCreating(builder);
+        builder.Entity<ApplicationUser>()
+            .Property(u => u.CreatedAt)
+            .HasDefaultValueSql("now()");
     }
 }

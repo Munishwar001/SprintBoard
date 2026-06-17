@@ -1,0 +1,118 @@
+@model SprintBoard.Models.SuperAdminDashboardViewModel
+@{
+    ViewData["Title"] = "SuperAdmin Dashboard";
+}
+
+<div class="welcome-banner mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h4>Welcome back, @Model.FullName!</h4>
+            <p>Here's a full overview of SprintBoard activity.</p>
+        </div>
+        <a href="@Url.Action("Create", "Users")" class="btn btn-light btn-sm fw-semibold">
+            <i class="fas fa-user-plus me-1"></i> New User
+        </a>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-xl-3">
+        <div class="stat-card stat-blue">
+            <div class="s-value">@Model.TotalUsers</div>
+            <div class="s-label">Total Users</div>
+            <i class="fas fa-users s-icon"></i>
+        </div>
+    </div>
+    <div class="col-6 col-xl-3">
+        <div class="stat-card stat-amber">
+            <div class="s-value">@Model.TotalAdmins</div>
+            <div class="s-label">Admins</div>
+            <i class="fas fa-user-shield s-icon"></i>
+        </div>
+    </div>
+    <div class="col-6 col-xl-3">
+        <div class="stat-card stat-green">
+            <div class="s-value">@Model.TotalRegularUsers</div>
+            <div class="s-label">Regular Users</div>
+            <i class="fas fa-user s-icon"></i>
+        </div>
+    </div>
+    <div class="col-6 col-xl-3">
+        <div class="stat-card stat-red">
+            <div class="s-value">@Model.TotalSuperAdmins</div>
+            <div class="s-label">SuperAdmins</div>
+            <i class="fas fa-crown s-icon"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Users + Quick Actions -->
+<div class="row g-3">
+    <div class="col-lg-8">
+        <div class="dash-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-clock me-2 text-muted"></i>Recent Users</span>
+                <a href="@Url.Action("Index", "Users")" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table dash-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.RecentUsers.Any())
+                        {
+                            @foreach (var u in Model.RecentUsers)
+                            {
+                                var badge = u.Role switch
+                                {
+                                    "SuperAdmin" => "bg-danger",
+                                    "Admin"      => "bg-warning text-dark",
+                                    _            => "bg-secondary"
+                                };
+                                <tr>
+                                    <td class="fw-semibold">@u.FullName</td>
+                                    <td class="text-muted">@u.Email</td>
+                                    <td><span class="badge @badge">@u.Role</span></td>
+                                    <td class="text-muted">@u.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">No users yet.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="dash-card h-100">
+            <div class="card-header"><i class="fas fa-bolt me-2 text-muted"></i>Quick Actions</div>
+            <div class="p-3">
+                <a href="@Url.Action("Index", "Users")" class="qa-btn">
+                    <i class="fas fa-users"></i> Manage Users
+                </a>
+                <a href="@Url.Action("Create", "Users")" class="qa-btn">
+                    <i class="fas fa-user-plus"></i> Create User
+                </a>
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="qa-btn">
+                    <i class="fas fa-user-circle"></i> My Profile
+                </a>
+                <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword" class="qa-btn">
+                    <i class="fas fa-key"></i> Change Password
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

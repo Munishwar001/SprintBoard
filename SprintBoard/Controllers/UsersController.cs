@@ -28,10 +28,10 @@ public class UsersController : Controller
             var roles = await _userManager.GetRolesAsync(user);
             viewModels.Add(new UserListViewModel
             {
-                Id = user.Id,
+                Id       = user.Id,
                 FullName = user.FullName,
-                Email = user.Email!,
-                Roles = roles
+                Email    = user.Email!,
+                Roles    = roles
             });
         }
 
@@ -47,12 +47,16 @@ public class UsersController : Controller
     {
         if (!ModelState.IsValid) return View(model);
 
+        var currentUser = await _userManager.GetUserAsync(User);
+
         var user = new ApplicationUser
         {
-            FullName = model.FullName,
-            Email = model.Email,
-            UserName = model.Email,
-            EmailConfirmed = true
+            FullName           = model.FullName,
+            Email              = model.Email,
+            UserName           = model.Email,
+            EmailConfirmed     = true,
+            CreatedAt          = DateTime.UtcNow,
+            CreatedByAdminId   = currentUser?.Id
         };
 
         var result = await _userManager.CreateAsync(user, model.Password);
@@ -79,9 +83,9 @@ public class UsersController : Controller
 
         return View(new EditUserViewModel
         {
-            Id = user.Id,
+            Id       = user.Id,
             FullName = user.FullName,
-            Email = user.Email!
+            Email    = user.Email!
         });
     }
 
@@ -98,7 +102,7 @@ public class UsersController : Controller
         if (!await CanManageUserAsync(user)) return Forbid();
 
         user.FullName = model.FullName;
-        user.Email = model.Email;
+        user.Email    = model.Email;
         user.UserName = model.Email;
 
         var result = await _userManager.UpdateAsync(user);
@@ -118,7 +122,6 @@ public class UsersController : Controller
     {
         if (User.IsInRole("SuperAdmin")) return true;
 
-        // Admin cannot touch SuperAdmins or other Admins
         var targetRoles = await _userManager.GetRolesAsync(user);
         return !targetRoles.Contains("SuperAdmin") && !targetRoles.Contains("Admin");
     }
