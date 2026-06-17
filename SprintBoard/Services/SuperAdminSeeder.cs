@@ -15,8 +15,17 @@ public static class SuperAdminSeeder
             ?? throw new InvalidOperationException("SuperAdmin:Password is not configured in user secrets.");
         var fullName = configuration["SuperAdmin:FullName"] ?? "Super Admin";
 
-        if (await userManager.FindByEmailAsync(email) is not null)
+        var existing = await userManager.FindByEmailAsync(email);
+        if (existing is not null)
+        {
+            // Fix existing SuperAdmin if email was not confirmed
+            if (!existing.EmailConfirmed)
+            {
+                existing.EmailConfirmed = true;
+                await userManager.UpdateAsync(existing);
+            }
             return;
+        }
 
         var superAdmin = new ApplicationUser
         {

@@ -21,11 +21,16 @@ namespace SprintBoard.Areas.Identity.Pages.Account;
 public class LoginModel : PageModel
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly ILogger<LoginModel> _logger;
 
-    public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+    public LoginModel(
+        SignInManager<ApplicationUser> signInManager,
+        UserManager<ApplicationUser> userManager,
+        ILogger<LoginModel> logger)
     {
         _signInManager = signInManager;
+        _userManager = userManager;
         _logger = logger;
     }
 
@@ -116,6 +121,11 @@ public class LoginModel : PageModel
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
+
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user is not null && await _userManager.IsInRoleAsync(user, "SuperAdmin"))
+                    return RedirectToAction("Index", "Dashboard");
+
                 return LocalRedirect(returnUrl);
             }
             if (result.RequiresTwoFactor)
@@ -126,6 +136,11 @@ public class LoginModel : PageModel
             {
                 _logger.LogWarning("User account locked out.");
                 return RedirectToPage("./Lockout");
+            }
+            if (result.IsNotAllowed)
+            {
+                ModelState.AddModelError(string.Empty, "Your email is not confirmed. Please check your inbox.");
+                return Page();
             }
             else
             {
